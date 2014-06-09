@@ -36,6 +36,8 @@ The URL's hash has 4 parts and looks like this...
     TITLE:       base64 encoded content text
     DATE:        base32 -- new Date().getTime().toString(32);
 
+For more details, view comments in the src/blinkot.js file.
+
 - - - - - - - - - - - - - - - -
  
 Open Source
