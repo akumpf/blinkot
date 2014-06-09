@@ -23,7 +23,7 @@
 // CONTENTTYPE: single letter (h,r,t) - see: typeNames
 // TITLE:       base64 encoded content text
 // DATE:        base32 -- new Date().getTime().toString(32);
-// - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - 
 
 // -- Low-level browser info.
 window.isInIFrame = (window.location != window.parent.location) ? true : false;
