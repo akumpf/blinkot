@@ -1,0 +1,186 @@
+<html lang="en-US" dir="ltr">
+<head>
+<!-- 
+  Hi there, Welcome to the code!
+  You're awesome for looking back here. 
+  --
+  This little "app" is clever in that it doesn't actually 
+  need to store any user data on the server. Instead all
+  information is stored directly in the URL and in the 
+  publicly accessible embedded content.
+  --
+  The use of a 3rd-party URL shortener is optional, but it
+  makes sharing much simpler and less scary, so it's been
+  included here by default. It can easily be disabled or 
+  swapped out for another provider as desired.
+  --
+  Rock on, and have a fantastic day!
+  --
+  question or thoughts? akumpf@gmail.com
+-->
+<meta charset='utf-8'>
+<!-- viewport / mobile -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+<!-- META for Search/Sharing info... -->
+<title>Blinkot</title>
+<meta property="og:site_name" content="Blinkot">
+<meta name="description"      content="Curated content and knowledge sharing." id='pageDescription'>
+<meta property="og:title"     content="Curated content and knowledge sharing." id='ogTitle'>
+<meta property="og:image"     content="http://a.blinkot.com/favicon.png" id='ogImage'/>
+<link rel='icon' id='rel_icon' type='image/png' href='http://a.blinkot.com/favicon.png'>
+
+<!-- LESS -->
+<link rel="stylesheet/less" type="text/css" href="blinkot.less" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.0/less.min.js"></script>
+<!-- -->
+
+</head>
+<body>
+
+  <!-- MAIN VIEW -->
+  <div id='mainviewtop' class='ztop noSelect' style='display:none;'>
+    <div class='mid'>
+      <div id='otitle' class='toptitle noSelect'></div>
+      <div id='otype'></div>
+    </div>
+  </div>
+  <div class='zmain' id='mainscroller' style='display:none;'>
+    <div class='mid' style='min-height:175px;'>
+      <div id='ocontent'>
+        <!-- HTML Content rendered here --> 
+      </div>
+      <div style='clear:both;'></div>
+    </div>
+    <div class='mid'>
+      <div id='footer'>
+        <div id='zfootersharebtn' class='friendlybtn' onclick='showShare();'>Share</div>
+        <br/>
+        <div class='friendlybtn footerbtnedit' onclick='openEditor();'>Edit / Fork</div>
+        <br/>
+        <div class='friendlybtn footerbtnnew' onclick='window.location.href="./";'>Start a New Blinkot</div>
+        <br/>
+        <div class='footerabout'>
+          Learn more at<br/> 
+          <a href='http://www.blinkot.com' target="_blank">www.blinkot.com</a><br/>
+          <a href='http://www.blinkot.com' target="_blank"><img class='footerimg' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAACmAAAApgBNtNH3wAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGTSURBVEiJ7ZW/S0JRFMc/puikPHp/Q+lLEJqigkAojECysaUEHfoDVHo0NTQ1OLS0BA1C0BZtRUSlSKhbNSkJQUnk8xeCOlhDEEJ5zZdufafDOfeczz2Hw72Gp0bjnSFqZJjFewJarRa70Sgnp6e6ASZR8O7hgdjRERaLhWWvVxdA2EG73Qag2WzqKt4TMAj9AwYHqNfr3N3f81Io9AUQrmmnZtzuL3tUkljx+dgIBjGbzcI8YQfVavVHv1Yuc3B4yOr6OsViUT/guWMc+3t7XJ6dcRyLEfD7MRmNZHM5tnd2hIBfj2h6agr4HI99fBz72BiRrS2u4nGuEwnmZmf770Akz8ICky4XAKl0uuu5P62p0+kEIJvLDQeglUoASJI0eIBWLpNMJgGYcDj0AYwjP4c1TSOiqpQqFaxWK0seT9cawi1SFOXLXgsEcNjtvL69kc5kqNVqAGyGw8iy3LWGodefHFJVzi8uvvltNhtqKMTS4qIovTcA4DaV4iaR4DGfR5ZlnIrCvNstvHlfgL9o6M/1B1QTgJhWjbYdAAAAAElFTkSuQmCC" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- EDITOR VIEW -->
+  <div id='zeditor' style='display:none;'>
+    <div id='zeditortop' class='ztop noSelect'>
+      <div class='mid2 noSelect' style='letter-spacing:1px;word-spacing:2px;'> 
+        EDIT &amp; FORK
+        <div id='navclose' class='navbtn' onclick='onEditorCloseBtnDn()'>&times;</div>
+      </div>
+    </div>
+    <div class='zmain' id='maineditor'>
+      <div class='zmainbg'><div class='mid2'>
+        <br/>
+        <div class='editlabel noSelect'>Title (short &amp; sweet)<div id='ititlecount'>0</div></div>
+        <input placeholder="Title..." type="text" id='ititle' onkeyup='onTitleChanged(this);' value=""/>
+        <div class='editlabel noSelect'>Theme</div>
+        <select id='itheme'>
+          <option value='a' selected>Light (default)</option>
+          <option value='b'>Dark</option>
+        </select>
+        <div class='editlabel noSelect'>Content Type</div>
+        <select id='itype'>
+          <option value='h' selected>Friendly HTML (default)</option>
+          <option value='r'>Raw HTML</option>
+          <option value='t'>Text</option>
+        </select>
+        <div class='editlabel noSelect'>Content<div id='icontentcount'>0</div></div>
+        <textarea placeholder="Enter some content here..." onkeyup='onContentChanged(this);' id='icontent'></textarea>
+        <div class='sectbreak'></div>
+        <div id='editbtnbigsave'    class='ostepbig' style='display:block;' onclick='saveAndCloseEditor();'>Save</div>
+        <div id='editbtnbigcancel'  class='ostepbig' style='display:block;' onclick='onEditorCloseBtnDn();'>Cancel</div>
+        <div style='clear:both'></div>
+      </div></div>
+    </div>
+  </div>
+  
+  <!-- SHARE VIEW -->
+  <div id='zshare' style='display:none;' onclick='hideShare();'>
+    <div id='zsharewait'></div> 
+    <div id='zsharebox' class='zshareboxr' onclick='hideShareEmbedcode(); event.stopPropagation();'> 
+      <span style='font-weight:200;'>Share with friends.</span>
+      <div id='shareclose' class='navbtn' onclick='hideShare()'>&times;</div>
+      <a href='' id='sharelink_direct'     target='_blank'><div id='zshareurl'></div></a>
+      <div id='zshareshrtreq' onclick='showShare(true);'>Want a shorter link?</div>
+      <a href='' id='sharelink_twitter'    target='_blank' title='Share on Twitter'><div class='sharebtn' style='background:#55ACEE;'>t</div></a>
+      <a href='' id='sharelink_facebook'   target='_blank' title='Share on Facebook'><div class='sharebtn' style='background:#3B5998;'>f</div></a>
+      <a href='' id='sharelink_googleplus' target='_blank' title='Share on Google+'><div class='sharebtn' style='background:#D34836;font-family:serif;'>g+</div></a>
+      <div class='sharebtn' style='font-family:monospace;font-size:16px;' title='Get the embed code.' onclick='showShareEmbedcode(); event.stopPropagation();'>&lt;/&gt;</div>
+      <div style='clear:both;margin-bottom:20px;'></div>
+    </div>
+    <div id='zshareboxembed' class='zshareboxr' onclick='event.stopPropagation();' style='background:#EEE;'>
+      HTML Embed Code:
+      <textarea id='embedtextarea' readonly=1></textarea>
+    </div>
+  </div>
+  
+  <!-- TINY --> 
+  <div id='bigclickr' style='display:none;'>
+    <img id='tinyimg' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAACmAAAApgBNtNH3wAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGTSURBVEiJ7ZW/S0JRFMc/puikPHp/Q+lLEJqigkAojECysaUEHfoDVHo0NTQ1OLS0BA1C0BZtRUSlSKhbNSkJQUnk8xeCOlhDEEJ5zZdufafDOfeczz2Hw72Gp0bjnSFqZJjFewJarRa70Sgnp6e6ASZR8O7hgdjRERaLhWWvVxdA2EG73Qag2WzqKt4TMAj9AwYHqNfr3N3f81Io9AUQrmmnZtzuL3tUkljx+dgIBjGbzcI8YQfVavVHv1Yuc3B4yOr6OsViUT/guWMc+3t7XJ6dcRyLEfD7MRmNZHM5tnd2hIBfj2h6agr4HI99fBz72BiRrS2u4nGuEwnmZmf770Akz8ICky4XAKl0uuu5P62p0+kEIJvLDQeglUoASJI0eIBWLpNMJgGYcDj0AYwjP4c1TSOiqpQqFaxWK0seT9cawi1SFOXLXgsEcNjtvL69kc5kqNVqAGyGw8iy3LWGodefHFJVzi8uvvltNhtqKMTS4qIovTcA4DaV4iaR4DGfR5ZlnIrCvNstvHlfgL9o6M/1B1QTgJhWjbYdAAAAAElFTkSuQmCC" />  
+    <div id='otitle2' class='toptitle'></div>
+    <div id='otype2'></div>
+    <div id='tinytxtbg' style='display:none;'></div>
+    <div id='tinytxt' style='display:none;'></div>
+    <a id='bigclickra' href='' target='_blank' class='noSelect'></a>
+  </div>
+<script>
+// Linkify derived from Mozilla Lab's together.js project.
+// Used under Mozilla Public License, v.2.0.
+function linkify(el) { 
+  el.normalize();
+  function linkifyNode(node) {
+    var _len = node.childNodes.length;
+    for (var i=0; i<_len; i++) {
+      if (node.childNodes[i].nodeType == document.ELEMENT_NODE) {
+        linkifyNode(node.childNodes[i]);
+      }
+    }
+    var texts = [];
+    for (i=0; i<_len; i++) {
+      if (node.childNodes[i].nodeType == document.TEXT_NODE) {
+        texts.push(node.childNodes[i]);
+      }
+    }
+    texts.forEach(function (item) {
+      if (item.nodeType == document.ELEMENT_NODE) {
+        linkifyNode(item);
+      } else if (item.nodeType == document.TEXT_NODE) {
+        while (true) {
+          var text = item.nodeValue;
+          var regex = /\bhttps?:\/\/[a-z0-9\.\-_](:\d+)?[^ \n\t<>()\[\]]*/i;
+          var match = regex.exec(text);
+          if(!match) break;
+          // --
+          var leadingNode = document.createTextNode(text.substr(0, match.index));
+          node.replaceChild(leadingNode, item);
+          var anchor = document.createElement("a");
+          anchor.setAttribute("target", "_blank");
+          anchor.href = match[0];
+          anchor.appendChild(document.createTextNode(match[0]));
+          node.insertBefore(anchor, leadingNode.nextSibling);
+          var trailing = document.createTextNode(text.substr(match.index + match[0].length));
+          node.insertBefore(trailing, anchor.nextSibling);
+          item = trailing;
+        }
+      }
+    });
+  }
+  linkifyNode(el);
+  return el;
+} 
+</script>
+<!-- JS -->
+<script src="./blinkot.js"></script>
+<!-- -->
+
+</body>
+</html>
