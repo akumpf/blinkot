@@ -14,6 +14,7 @@ console.log("`---------------------------'");
 var compressCSS = true;
 var compressJS  = true;
 var absSrcDir   = ".";
+var absOutDir   = "../";
 var absOutFile  = "../index.html"; 
 
 // --
@@ -85,4 +86,30 @@ console.log("READ: index.html + css + js: "+indexStr.length);
 // Write to outpu file
 console.log(" - - - - WRITING FILE - - - -");
 fs.writeFileSync(absOutFile, indexStr, 'utf8');
+
+// minify modules...
+var modsToLoad = ["m"];
+for(var i=0; i<modsToLoad.length; i++){
+  var modLetter = modsToLoad[i];
+  var jsModStr    = fs.readFileSync(absSrcDir+"/mod_"+modLetter+".js",  {encoding: "utf-8"})||"";
+  console.log("READ:  mod_"+modLetter+".js:             "+jsModStr.length);
+  if(compressJS){
+    try{
+      var result  = uglify.minify(jsModStr, {fromString: true});
+      jsModStr    = result.code;
+      //console.log("READ: --> mod_"+modLetter+".js.min:    "+jsModStr.length);
+    }catch(ex){
+      console.log("** ERROR: JS parse error during minify. **");
+      console.log(ex);
+      return process.exit();
+    }
+  }
+  console.log("WRITE: mod_"+modLetter+".js:             "+jsModStr.length);
+  fs.writeFileSync(absOutDir+"mod_"+modLetter+".js", jsModStr, 'utf8');
+}
+
 console.log(" - - - - - D O N E! - - - - -");
+
+
+
+

@@ -140,26 +140,46 @@ var typeNames = {
   h:"HTML",
   r:"Raw HTML",
   t:"Text",
+  m:"Markdown",
 };
-function _renderFriendlyHTML(c){
-  c = c||"";
-  c = stripScripts(c);
-  c = autoEmbedKnownURLS(c);
-  c = wrapIframes(c); 
-  c = "<div class='dp'>"+doubleLinebreaktsToMarker(c,"</div><div class='dp'>")+"</div>";
-  c = linebreaksToBR(c); 
-  c = autoLink(c);
-  return c;
-}
-function _renderRawHTML(c){
-  c = c||"";
-  c = stripScripts(c);
-  return c;
-}
-function _renderText(c){
-  c = c||"";
-  c = "<div class='dtxt'>"+escapeHTML(c)+"</div>";
-  return c;
+
+// -- MODULE LOADING / RENDERING
+var mods = { // additionally populated when modules load.
+  h: function renderFriendlyHTML(c){
+    c = c||"";
+    c = stripScripts(c);
+    c = autoEmbedKnownURLS(c);
+    c = wrapIframes(c); 
+    c = "<div class='dp'>"+doubleLinebreaktsToMarker(c,"</div><div class='dp'>")+"</div>";
+    c = linebreaksToBR(c); 
+    c = autoLink(c);
+    return c;
+  },
+  r: function renderRawHTML(c){
+    c = c||"";
+    c = stripScripts(c);
+    return c;
+  },
+  t: function renderText(c){
+    c = c||"";
+    c = "<div class='dtxt'>"+escapeHTML(c)+"</div>";
+    return c;
+  }
+}; 
+var modsRequested = {};
+window.onModReady = function(modLetter){
+  console.log("Mod is ready: "+modLetter);
+  renderBlinkot();
+};
+function requestMod(modLetter){
+  if(modsRequested[modLetter]) return console.log("Mod already requested: "+modLetter);
+  // --
+  modsRequested[modLetter] = true;
+  console.log("Requesting mod: "+modLetter);
+  var js = document.createElement("script");
+  js.type = "text/javascript";
+  js.src = "./mod_"+modLetter+".js";
+  document.body.appendChild(js);
 }
 
 // -- LOCATION HASH
@@ -279,20 +299,26 @@ function renderBlinkot(){
     document.getElementById("mainscroller").style.display = "block";
     // --
     var html = "";
-    switch(o.type){
-      case "h": // FriendlyHTML
-        console.log("Rendering: FriendlyHTML");
-        html = _renderFriendlyHTML(o.c);
-        break;
-      case "r": // RawHTML
-        console.log("Rendering: RawHTML");
-        html = _renderRawHTML(o.c);
-        break;
-      case "t": // Text
-        console.log("Rendering: Text");
-        html = _renderText(o.c);
-        break;
+    if(typeNames[o.type] && mods[o.type]){
+      console.log("Rendering: "+typeNames[o.type]);
+      html = mods[o.type](o.c);
+    }else{
+      requestMod(o.type);
     }
+    // switch(o.type){
+    //   case "h": // FriendlyHTML
+    //     console.log("Rendering: FriendlyHTML");
+    //     html = _renderFriendlyHTML(o.c);
+    //     break;
+    //   case "r": // RawHTML
+    //     console.log("Rendering: RawHTML");
+    //     html = _renderRawHTML(o.c);
+    //     break;
+    //   case "t": // Text
+    //     console.log("Rendering: Text");
+    //     html = _renderText(o.c);
+    //     break;
+    // }
     document.getElementById("ocontent").innerHTML = html;
     // --
     if(!o.title){
