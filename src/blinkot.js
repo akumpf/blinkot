@@ -304,21 +304,7 @@ function renderBlinkot(){
       html = mods[o.type](o.c);
     }else{
       requestMod(o.type);
-    }
-    // switch(o.type){
-    //   case "h": // FriendlyHTML
-    //     console.log("Rendering: FriendlyHTML");
-    //     html = _renderFriendlyHTML(o.c);
-    //     break;
-    //   case "r": // RawHTML
-    //     console.log("Rendering: RawHTML");
-    //     html = _renderRawHTML(o.c);
-    //     break;
-    //   case "t": // Text
-    //     console.log("Rendering: Text");
-    //     html = _renderText(o.c);
-    //     break;
-    // }
+    } 
     document.getElementById("ocontent").innerHTML = html;
     // --
     if(!o.title){
