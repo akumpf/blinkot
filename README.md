@@ -3,7 +3,7 @@ blinkot
 
 Blinkot is a decentralized, democratized, and robust way to collect and distribute short-form information.
 
-Think of a blinkot as somewhere between a tweet and a blog post that anyone can edit and re-share with their changes (i.e. post of twitter, facebook, google+, or embed).
+Think of a blinkot as somewhere between a tweet and a blog post that anyone can edit and re-share with their changes (i.e. post on twitter, facebook, google+, or embed).
 
 See the blinkot homepage for more info:
 http://www.blinkot.com
