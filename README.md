@@ -47,7 +47,7 @@ For more details, view comments in the src/blinkot.js file.
 Design Considerations
 --
 Blinkot is served from a single, static index.html file. This makes
-scaling up crazy simple since it can be uploaded anywhere are used
+scaling up crazy simple since it can be uploaded anywhere and used
 immediately.
 
 Blinkot is designed to be super lightweight. It doesn't even need jQuery.
